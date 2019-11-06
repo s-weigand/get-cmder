@@ -102,3 +102,10 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+# vscode config
+.vscode
+
+# testing files
+cmder.zip
+cmder/
