@@ -109,3 +109,6 @@ venv.bak/
 # testing files
 cmder.zip
 cmder/
+
+AddCmderContextMenueEntry.reg
+RemoveCmderContextMenueEntry.reg

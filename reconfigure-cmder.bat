@@ -20,6 +20,5 @@ CD /D "%~dp0"
 :: Your codes should start from the following line
 
 PowerShell Set-ExecutionPolicy bypass
-PowerShell -NonInteractive -command "& '%~dp0powershell_files\download_cmder.ps1'"
 PowerShell -command "& '%~dp0powershell_files\configure_cmder.ps1'"
 PowerShell Set-ExecutionPolicy Restricted
