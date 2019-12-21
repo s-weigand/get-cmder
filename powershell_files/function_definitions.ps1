@@ -1,6 +1,7 @@
 # General needed paths
 $project_root = (Resolve-Path $PSScriptRoot\..\).Path
-$cmder_unpack_path = Join-Path $project_root "cmder/"
+# $cmder_unpack_path = Join-Path $project_root "cmder/"
+$cmder_unpack_path = Join-Path $env:USERPROFILE "cmder/"
 
 # Paths only needed by download script
 $zip_temp = Join-Path $project_root "temp.zip"
