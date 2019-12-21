@@ -107,8 +107,9 @@ venv.bak/
 .vscode
 
 # testing files
-cmder.zip
+temp.zip
 cmder/
+make/
 
 AddCmderContextMenueEntry.reg
 RemoveCmderContextMenueEntry.reg
