@@ -101,16 +101,16 @@ function force_copy_file {
 }
 
 function ask_if_conda_is_used {
-    $title = 'Conda?'
-    $question = 'Are you using Anaconda?'
+    $title = 'Is Conda Installed?'
+    $question = 'Do you want to use Anaconda?'
     $choices = '&Yes', '&No'
 
     $decision = $Host.UI.PromptForChoice($title, $question, $choices, 0)
     if ($decision -eq 0) {
-        add_conda_path
+        select_conda_path
     }
 }
-function add_conda_path {
+function select_conda_path {
 
     [System.Reflection.Assembly]::LoadWithPartialName("System.windows.forms") | Out-Null
     $foldername = New-Object System.Windows.Forms.FolderBrowserDialog
@@ -119,12 +119,52 @@ function add_conda_path {
 
     if ($foldername.ShowDialog() -eq "OK") {
         $conda_folder = $foldername.SelectedPath
-        Add-Content $custom_user_profile_dest "export CONDA_ROOT_DIR='$($conda_folder)'"
         if (!(validate_conda_dir $conda_folder)) {
             [System.Windows.Forms.MessageBox]::Show("The chosen folder isn't an Anaconda installation root folder.", "Wrong folder", 0)
             add_conda_path
         }
+        else {
+            Add-Content $custom_user_profile_dest "export CONDA_ROOT_DIR='$($conda_folder)'"
+            add_conda_default_path $conda_folder
+        }
     }
+}
+
+function add_conda_default_path {
+    param([string]$conda_dir)
+    $CONDA_PATHS = generate_conda_paths $conda_dir
+    $title = 'Add Conda to path?'
+    $question = 'Do you want to add Anaconda to your PATH variable?'
+    $choices = '&Yes', '&No'
+
+    $decision = $Host.UI.PromptForChoice($title, $question, $choices, 0)
+    if ($decision -eq 0) {
+        Add-Content $custom_user_profile_dest "export PATH=$($CONDA_PATHS):`$PATH"
+    }
+    else {
+        Add-Content $custom_user_profile_dest "export INITIAL_PATH=`$PATH"
+        "Added 'use_conda' fucntion to add all needed paths for the "
+        "full conda functionality and make the conda python the default python."
+        Add-Content $custom_user_profile_dest "use_conda(){"
+        Add-Content $custom_user_profile_dest "    export PATH=`"$($CONDA_PATHS):`$PATH`""
+        Add-Content $custom_user_profile_dest "}"
+        "To not use condas python as default python run 'restore_path'."
+        Add-Content $custom_user_profile_dest "restore_path(){"
+        Add-Content $custom_user_profile_dest "    export PATH=`"`$INITIAL_PATH`""
+        Add-Content $custom_user_profile_dest "}"
+    }
+}
+
+function generate_conda_paths {
+    param([string]$conda_dir)
+    $conda_dir = (($conda_dir -replace "\\", "/") -replace ":", "").ToLower().Trim("/")
+    $conda_dir = "/$($conda_dir)"
+    $CONDA_PATHS = "$($conda_dir)"
+    $CONDA_PATHS = "$($conda_dir)/Library/mingw-w64/bin:$($CONDA_PATHS)"
+    $CONDA_PATHS = "$($conda_dir)/Library/usr/bin:$($CONDA_PATHS)"
+    $CONDA_PATHS = "$($conda_dir)/Library/bin:$($CONDA_PATHS)"
+    $CONDA_PATHS = "$($conda_dir)/Scripts:$($CONDA_PATHS)"
+    return $CONDA_PATHS
 }
 
 function validate_conda_dir {
