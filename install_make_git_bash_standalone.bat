@@ -22,3 +22,5 @@ CD /D "%~dp0"
 PowerShell Set-ExecutionPolicy bypass
 PowerShell -command "& '%~dp0powershell_files\install_make_git_bash_standalone.ps1'"
 PowerShell Set-ExecutionPolicy Restricted
+
+PAUSE

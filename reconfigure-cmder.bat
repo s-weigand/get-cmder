@@ -22,3 +22,5 @@ CD /D "%~dp0"
 PowerShell Set-ExecutionPolicy bypass
 PowerShell -command "& '%~dp0powershell_files\configure_cmder.ps1'"
 PowerShell Set-ExecutionPolicy Restricted
+
+PAUSE
