@@ -79,7 +79,7 @@ def update_download_urls():
         "make_download_url"
     )
     if cmderr_download_url != used_cmderr_download_url:
-        print("Replacing cmderr_download_url")
+        print(f"Replacing cmderr_download_url with: {cmderr_download_url}")
         url_changed = True
         func_def = re.sub(
             cmder_url_pattern,
@@ -87,7 +87,7 @@ def update_download_urls():
             func_def,
         )
     if make_download_url != used_make_download_url:
-        print("Replacing make_download_url")
+        print(f"Replacing make_download_url with: {make_download_url}")
         url_changed = True
         func_def = re.sub(
             make_url_pattern, f'$download_make_url = "{make_download_url}"', func_def

@@ -1,6 +1,6 @@
 on:
   schedule:
-    - cron: "40 17 * * 1" # At 07:00 on each Monday.
+    - cron: "50 17 * * 1" # At 07:00 on each Monday.
     # - cron: "0 7 * * 1" # At 07:00 on each Monday.
 
 name: Update download urls
@@ -18,7 +18,12 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install -r .github/update_tools/requirements.txt
-      - name: Make update PR
+      - name: Cache local-chromium
+        uses: actions/cache@v1
+        with:
+          path: /home/runner/.local/share/pyppeteer/local-chromium
+          key: local-chromium
+      - name: Check updated urls
         uses: technote-space/create-pr-action@v1
         with:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
