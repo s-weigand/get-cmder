@@ -1,7 +1,7 @@
 on:
   schedule:
-    - cron: "0 7 * * 1" # At 07:00 on each Monday.
-  push:
+    - cron: "40 17 * * 1" # At 07:00 on each Monday.
+    # - cron: "0 7 * * 1" # At 07:00 on each Monday.
 
 name: Update download urls
 jobs:
@@ -21,13 +21,9 @@ jobs:
       - name: Make update PR
         uses: technote-space/create-pr-action@v1
         with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
           EXECUTE_COMMANDS: |
             python .github/update_tools/update_downloads.py
           COMMIT_MESSAGE: "chore: update download urls"
-          PR_BRANCH_NAME: "chore-download-url-update-${PR_ID}"
-          PR_TITLE: "chore: update download urls (${PR_MERGE_REF})"
-          PR_DEFAULT_BRANCH_PREFIX: updates/
-          PR_DEFAULT_BRANCH_NAME: ${PATCH_VERSION}
-          PR_DEFAULT_BRANCH_TITLE: updates/${PATCH_VERSION}
-          TARGET_BRANCH_PREFIX: updates/
+          PR_BRANCH_NAME: "chore-download-url-update"
+          PR_TITLE: "chore: update download urls"
