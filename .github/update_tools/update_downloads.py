@@ -58,9 +58,6 @@ def update_download_urls():
     )
     cmderr_download_url = get_cmderr_download_url()
     make_download_url = get_make_download_url()
-    # func_def_file_path = os.path.abspath(
-    #     os.path.join(os.path.dirname(__file__), "function_definitions.ps1")
-    # )
     func_def_file_path = os.path.abspath(
         os.path.join(
             os.path.dirname(__file__),

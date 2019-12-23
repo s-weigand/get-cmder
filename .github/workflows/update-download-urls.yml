@@ -1,6 +1,6 @@
 on:
   schedule:
-    - cron: "50 17 * * 1" # At 07:00 on each Monday.
+    - cron: "15 18 * * 1" # At 07:00 on each Monday.
     # - cron: "0 7 * * 1" # At 07:00 on each Monday.
 
 name: Update download urls
@@ -32,3 +32,4 @@ jobs:
           COMMIT_MESSAGE: "chore: update download urls"
           PR_BRANCH_NAME: "chore-download-url-update"
           PR_TITLE: "chore: update download urls"
+          PR_BRANCH_PREFIX: "updates"
