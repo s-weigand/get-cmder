@@ -32,4 +32,4 @@ jobs:
           COMMIT_MESSAGE: "chore: update download urls"
           PR_BRANCH_NAME: "chore-download-url-update"
           PR_TITLE: "chore: update download urls"
-          PR_BRANCH_PREFIX: "updates"
+          PR_BRANCH_PREFIX: "updates/"
