@@ -1,7 +1,6 @@
 on:
   schedule:
-    - cron: "15 18 * * 1" # At 07:00 on each Monday.
-    # - cron: "0 7 * * 1" # At 07:00 on each Monday.
+    - cron: "0 5 * * 1" # At 05:00 GMT on each Monday.
 
 name: Update download urls
 jobs:
