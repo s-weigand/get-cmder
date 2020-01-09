@@ -138,20 +138,21 @@ function add_conda_default_path {
     $choices = '&Yes', '&No'
 
     $decision = $Host.UI.PromptForChoice($title, $question, $choices, 0)
+
+    Add-Content $custom_user_profile_dest "export INITIAL_PATH=`$PATH"
+    "Added 'conda_add_path' function to add all needed paths for the "
+    "full conda functionality and make the conda python the default python."
+    Add-Content $custom_user_profile_dest "conda_add_path(){"
+    Add-Content $custom_user_profile_dest "    echo Added conda paths to cmder PATH variable, call `'conda_remove_path`' to restore the default PATH variable"
+    Add-Content $custom_user_profile_dest "    export PATH=`"$($CONDA_PATHS):`$PATH`""
+    Add-Content $custom_user_profile_dest "}"
+    "To not use condas python as default python run 'conda_remove_path'."
+    Add-Content $custom_user_profile_dest "conda_remove_path(){"
+    Add-Content $custom_user_profile_dest "    echo Restored default PATH variable, call `'conda_add_path`' to use conda"
+    Add-Content $custom_user_profile_dest "    export PATH=`"`$INITIAL_PATH`""
+    Add-Content $custom_user_profile_dest "}"
     if ($decision -eq 0) {
-        Add-Content $custom_user_profile_dest "export PATH=$($CONDA_PATHS):`$PATH"
-    }
-    else {
-        Add-Content $custom_user_profile_dest "export INITIAL_PATH=`$PATH"
-        "Added 'use_conda' fucntion to add all needed paths for the "
-        "full conda functionality and make the conda python the default python."
-        Add-Content $custom_user_profile_dest "use_conda(){"
-        Add-Content $custom_user_profile_dest "    export PATH=`"$($CONDA_PATHS):`$PATH`""
-        Add-Content $custom_user_profile_dest "}"
-        "To not use condas python as default python run 'restore_path'."
-        Add-Content $custom_user_profile_dest "restore_path(){"
-        Add-Content $custom_user_profile_dest "    export PATH=`"`$INITIAL_PATH`""
-        Add-Content $custom_user_profile_dest "}"
+        Add-Content $custom_user_profile_dest "conda_add_path"
     }
 }
 
