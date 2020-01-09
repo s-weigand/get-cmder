@@ -52,12 +52,12 @@ function write_reg_keys {
     $add_cmder_context_entry_file.WriteLine("@=`"Open Cmder Here`"")
     $add_cmder_context_entry_file.WriteLine("`"Icon`"=`"$($cmder_executable_path_escaped),0`"`n")
     $add_cmder_context_entry_file.WriteLine("[HKEY_CLASSES_ROOT\Directory\Background\shell\Cmder\command]")
-    $add_cmder_context_entry_file.WriteLine("@=`"\`"$($cmder_executable_path_escaped)`" \`"%V\`"`"`n")
+    $add_cmder_context_entry_file.WriteLine("@=`"\`"$($cmder_executable_path_escaped)\`" \`"%V\`"`"`n")
     $add_cmder_context_entry_file.WriteLine("[HKEY_CLASSES_ROOT\Directory\shell\Cmder]")
     $add_cmder_context_entry_file.WriteLine("@=`"Open Cmder Here`"")
     $add_cmder_context_entry_file.WriteLine("`"Icon`"=`"$($cmder_executable_path_escaped),0`"`n")
     $add_cmder_context_entry_file.WriteLine("[HKEY_CLASSES_ROOT\Directory\shell\Cmder\command]")
-    $add_cmder_context_entry_file.WriteLine("@=`"\`"$($cmder_executable_path_escaped)`" \`"%1\`"`"")
+    $add_cmder_context_entry_file.WriteLine("@=`"\`"$($cmder_executable_path_escaped)\`" \`"%1\`"`"")
     $add_cmder_context_entry_file.close()
 
     $del_cmder_context_entry_file = [System.IO.StreamWriter] "RemoveCmderContextMenueEntry.reg"
