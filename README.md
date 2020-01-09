@@ -20,7 +20,7 @@ This assumes that you installed cmder to the path `%USERPROFILE%/cmder`, i.e. wi
 2. When asked choose whether to use conda or not, and if you want to use conda select the Anaconda installation folder.
 3. If you want to add the context menu (right click menu) entry `Open Cmder Here` just run `AddCmderContextMenueEntry.reg`, which will sett the appropriate registry keys and thus add cmder. To remove it again run `RemoveCmderContextMenueEntry.reg`.
 
-### Install GNU Make into a standalone installation of [Git Bash for Windows](https://gitforwindows.org/) (NOT TESTED YET)
+### Install GNU Make into a standalone installation of [Git Bash for Windows](https://gitforwindows.org/)
 
 1. Download or clone this repo
 2. Run `install_make_git_bash_standalone.bat`
