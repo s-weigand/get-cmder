@@ -25,6 +25,12 @@ This assumes that you installed cmder to the path `%USERPROFILE%/cmder`, i.e. wi
 
 ### Standalone installation of [Git Bash for Windows](https://gitforwindows.org/)
 
+#### Configure Git Bash
+
+1. Download or clone this repo
+2. Run `git_bash_standalone_configure.bat`
+3. When asked choose whether to use conda or not, and if you want to use conda select the Anaconda installation folder.
+
 #### Install GNU Make into Git Bash
 
 1. Download or clone this repo

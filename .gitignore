@@ -110,6 +110,7 @@ venv.bak/
 temp.zip
 cmder/
 make/
-
 AddCmderContextMenueEntry.reg
 RemoveCmderContextMenueEntry.reg
+.bash_profile
+.bash_profile_tmp

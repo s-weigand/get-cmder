@@ -28,6 +28,10 @@ $custom_user_profile_dest = Join-Path $cmder_unpack_path "config/user_profile.sh
 $custom_conemu_config_dest = Join-Path $cmder_unpack_path "vendor/conemu-maximus5/ConEmu.xml"
 $default_conemu_config_dest = Join-Path $cmder_unpack_path "vendor/ConEmu.xml.default"
 
+$temp_rc_file = Join-Path $project_root "/.bash_profile_tmp"
+# $default_git_bash_config_path = Join-Path $project_root "/.bash_profile"
+$default_git_bash_config_path = Join-Path $env:USERPROFILE ".bash_profile"
+
 # DOWLOAD FUNCTIONS
 
 function delete_file {
@@ -101,59 +105,83 @@ function force_copy_file {
 }
 
 function ask_if_conda_is_used {
+    param([string]$conf_file_path = $custom_user_profile_dest)
     $title = 'Is Conda Installed?'
     $question = 'Do you want to use Anaconda?'
     $choices = '&Yes', '&No'
 
     $decision = $Host.UI.PromptForChoice($title, $question, $choices, 0)
     if ($decision -eq 0) {
-        select_conda_path
+        select_conda_path $conf_file_path
     }
 }
 function select_conda_path {
+    param([string]$conf_file_path)
 
     [System.Reflection.Assembly]::LoadWithPartialName("System.windows.forms") | Out-Null
     $foldername = New-Object System.Windows.Forms.FolderBrowserDialog
     $foldername.Description = "Select the folder Anaconda is installed into"
     $foldername.rootfolder = "MyComputer"
 
-    if ($foldername.ShowDialog() -eq "OK") {
+    $folder_select_response = $foldername.ShowDialog()
+
+    if ($folder_select_response -eq "OK") {
         $conda_folder = $foldername.SelectedPath
         if (!(validate_conda_dir $conda_folder)) {
             [System.Windows.Forms.MessageBox]::Show("The chosen folder isn't an Anaconda installation root folder.", "Wrong folder", 0)
-            add_conda_path
+            select_conda_path $conf_file_path
         }
         else {
-            Add-Content $custom_user_profile_dest "export CONDA_ROOT_DIR='$($conda_folder)'"
             add_conda_default_path $conda_folder
         }
     }
+    return $folder_select_response
 }
 
 function add_conda_default_path {
-    param([string]$conda_dir)
-    $CONDA_PATHS = generate_conda_paths $conda_dir
+    param([string]$conda_folder)
+    $CONDA_PATHS = generate_conda_paths $conda_folder
     $title = 'Add Conda to path?'
     $question = 'Do you want to add Anaconda to your PATH variable?'
     $choices = '&Yes', '&No'
 
     $decision = $Host.UI.PromptForChoice($title, $question, $choices, 0)
 
-    Add-Content $custom_user_profile_dest "export INITIAL_PATH=`$PATH"
     "Added 'conda_add_path' function to add all needed paths for the "
     "full conda functionality and make the conda python the default python."
-    Add-Content $custom_user_profile_dest "conda_add_path(){"
-    Add-Content $custom_user_profile_dest "    echo Added conda paths to cmder PATH variable, call `'conda_remove_path`' to restore the default PATH variable"
-    Add-Content $custom_user_profile_dest "    export PATH=`"$($CONDA_PATHS):`$PATH`""
-    Add-Content $custom_user_profile_dest "}"
+    Add-Content $conf_file_path "# BEGIN GET-CMDER CONDA CONFIG"
+    Add-Content $conf_file_path "# Dont add configuration after this part, since it will be deleted on reconfigure"
+    Add-Content $conf_file_path "export CONDA_ROOT_DIR='$($conda_folder)'"
+    Add-Content $conf_file_path "export INITIAL_PATH=`$PATH"
+    Add-Content $conf_file_path "conda_add_path(){"
+    Add-Content $conf_file_path "    echo Added conda paths to cmder PATH variable, call `'conda_remove_path`' to restore the default PATH variable"
+    Add-Content $conf_file_path "    export PATH=`"$($CONDA_PATHS):`$PATH`""
+    Add-Content $conf_file_path "}"
     "To not use condas python as default python run 'conda_remove_path'."
-    Add-Content $custom_user_profile_dest "conda_remove_path(){"
-    Add-Content $custom_user_profile_dest "    echo Restored default PATH variable, call `'conda_add_path`' to use conda"
-    Add-Content $custom_user_profile_dest "    export PATH=`"`$INITIAL_PATH`""
-    Add-Content $custom_user_profile_dest "}"
+    Add-Content $conf_file_path "conda_remove_path(){"
+    Add-Content $conf_file_path "    echo Restored default PATH variable, call `'conda_add_path`' to use conda"
+    Add-Content $conf_file_path "    export PATH=`"`$INITIAL_PATH`""
+    Add-Content $conf_file_path "}"
     if ($decision -eq 0) {
-        Add-Content $custom_user_profile_dest "conda_add_path"
+        Add-Content $conf_file_path "conda_add_path"
     }
+    Add-Content $conf_file_path "# END GET-CMDER CONDA CONFIG"
+}
+
+function strip_conda_config {
+    if (Test-Path $default_git_bash_config_path) {
+        $original_config = Get-Content $default_git_bash_config_path -Raw
+    }
+    else {
+        $original_config = ""
+    }
+    $stripped_config = $original_config -replace "(?s)# BEGIN GET-CMDER CONDA CONFIG.+# END GET-CMDER CONDA CONFIG", ""
+    Set-Content -Path $temp_rc_file -Value $stripped_config
+    $cmder_default_config = Get-Content $custom_user_profile_src -Raw
+    Add-Content $temp_rc_file "# BEGIN GET-CMDER CONDA CONFIG"
+    Add-Content $temp_rc_file "# Dont add configuration after this part, since it will be deleted on reconfigure"
+    Add-Content $temp_rc_file $cmder_default_config
+    Add-Content $temp_rc_file "# END GET-CMDER CONDA CONFIG"
 }
 
 function generate_conda_paths {
