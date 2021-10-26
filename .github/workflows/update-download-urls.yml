@@ -14,7 +14,7 @@ jobs:
       - name: Setup python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.7
+          python-version: 3.8
       - name: Install dependencies
         run: |
           python -m pip install -r .github/update_tools/requirements.txt
@@ -29,7 +29,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
           EXECUTE_COMMANDS: |
             python .github/update_tools/update_downloads.py
-          COMMIT_MESSAGE: "chore: update download urls"
+          COMMIT_MESSAGE: "⬆️ Update download urls"
           PR_BRANCH_NAME: "chore-download-url-update"
-          PR_TITLE: "chore: update download urls"
+          PR_TITLE: "⬆️ Update download urls"
           PR_BRANCH_PREFIX: "updates/"
