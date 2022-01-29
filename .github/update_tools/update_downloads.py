@@ -4,7 +4,7 @@ import re
 from requests_html import HTMLSession
 
 
-def get_cmderr_download_url():
+def get_cmder_download_url():
     """
     Return the latest download url for cmder full.
 
@@ -56,7 +56,7 @@ def update_download_urls():
     make_url_pattern = re.compile(
         r'^\$download_make_url = "(?P<make_download_url>.+?)"$', re.MULTILINE
     )
-    cmderr_download_url = get_cmderr_download_url()
+    cmderr_download_url = get_cmder_download_url()
     make_download_url = get_make_download_url()
     func_def_file_path = os.path.abspath(
         os.path.join(
