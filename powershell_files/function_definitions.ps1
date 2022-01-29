@@ -5,7 +5,7 @@ $cmder_unpack_path = Join-Path $env:USERPROFILE "cmder/"
 
 # Paths only needed by download script
 $zip_temp = Join-Path $project_root "temp.zip"
-$download_cmder_url = "https://github.com//cmderdev/cmder/releases/download/v1.3.18/cmder.zip"
+$download_cmder_url = "https://github.com//cmderdev/cmder/releases/download/v1.3.19/cmder.zip"
 $download_make_url = "https://sourceforge.net/projects/ezwinports/files/make-4.3-without-guile-w32-bin.zip/download"
 $cmder_executable_path = Join-Path $cmder_unpack_path "Cmder.exe"
 $cmder_executable_path_escaped = "$([RegEx]::Escape($cmder_unpack_path))Cmder.exe"
