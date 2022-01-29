@@ -4,7 +4,7 @@ import re
 from requests_html import HTMLSession
 
 
-def get_cmderr_download_url():
+def get_cmder_download_url():
     """
     Return the latest download url for cmder full.
 
@@ -16,11 +16,12 @@ def get_cmderr_download_url():
     session = HTMLSession()
     cmder_page = session.get("https://github.com/cmderdev/cmder/releases/latest")
     cmder_page.html.render()
-    cmder_links = cmder_page.html.find("a.d-flex.flex-items-center.min-width-0")
+    cmder_links = cmder_page.html.find(".Box-row a")
     for cmder_link in cmder_links:
         cmder_link = cmder_link.attrs["href"]
         if cmder_link.endswith("cmder.zip"):
             return f"https://github.com/{cmder_link}"
+    raise ValueError("Couldn't get downloadurl for CMDER!")
 
 
 def get_make_download_url():
@@ -43,6 +44,7 @@ def get_make_download_url():
         link = link.attrs["href"]
         if re.search(make_download_url_pattern, link):
             return link
+    raise ValueError("Couldn't get downloadurl for MAKE!")
 
 
 def update_download_urls():
@@ -56,7 +58,7 @@ def update_download_urls():
     make_url_pattern = re.compile(
         r'^\$download_make_url = "(?P<make_download_url>.+?)"$', re.MULTILINE
     )
-    cmderr_download_url = get_cmderr_download_url()
+    cmderr_download_url = get_cmder_download_url()
     make_download_url = get_make_download_url()
     func_def_file_path = os.path.abspath(
         os.path.join(
