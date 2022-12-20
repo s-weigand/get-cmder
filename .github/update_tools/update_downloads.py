@@ -14,13 +14,12 @@ def get_cmder_download_url():
         Latest download url for for cmder full
     """
     session = HTMLSession()
-    cmder_page = session.get("https://github.com/cmderdev/cmder/releases/latest")
-    cmder_page.html.render()
-    cmder_links = cmder_page.html.find(".Box-row a")
-    for cmder_link in cmder_links:
-        cmder_link = cmder_link.attrs["href"]
-        if cmder_link.endswith("cmder.zip"):
-            return f"https://github.com/{cmder_link}"
+    cmder_page = session.get(
+        "https://api.github.com/repos/cmderdev/cmder/releases/latest"
+    )
+    for asset in cmder_page.json().get("assets", []):
+        if asset.get("name", None) == "cmder.zip":
+            return asset["browser_download_url"]
     raise ValueError("Couldn't get downloadurl for CMDER!")
 
 
