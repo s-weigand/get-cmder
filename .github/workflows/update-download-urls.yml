@@ -19,7 +19,7 @@ jobs:
         run: |
           python -m pip install -r .github/update_tools/requirements.txt
       - name: Cache local-chromium
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: /home/runner/.local/share/pyppeteer/local-chromium
           key: local-chromium
