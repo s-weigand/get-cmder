@@ -2,7 +2,7 @@ on:
   push:
   pull_request:
 
-name: Update download urls
+name: Test update download urls
 jobs:
   update-downloads:
     name: Update download urls
