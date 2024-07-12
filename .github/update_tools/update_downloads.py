@@ -20,7 +20,7 @@ def get_cmder_download_url():
     for asset in cmder_page.json().get("assets", []):
         if asset.get("name", None) == "cmder.zip":
             return asset["browser_download_url"]
-    raise ValueError("Couldn't get downloadurl for CMDER!")
+    raise ValueError("Couldn't get download url for CMDER!")
 
 
 def get_make_download_url():
@@ -43,7 +43,7 @@ def get_make_download_url():
         link = link.attrs["href"]
         if re.search(make_download_url_pattern, link):
             return link
-    raise ValueError("Couldn't get downloadurl for MAKE!")
+    raise ValueError("Couldn't get download url for MAKE!")
 
 
 def update_download_urls():
